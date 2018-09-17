@@ -13,3 +13,5 @@ Password: admin
 
 Statsd agent (telegraf) Port 8125 (UDP)
 
+
+![Example Screenshot](./example.png?raw=true "Example Screenshot")
