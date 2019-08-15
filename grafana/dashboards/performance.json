@@ -24,6 +24,7 @@
       "dashes": false,
       "datasource": "InfluxDB",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
@@ -44,6 +45,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -98,6 +102,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Request Time",
       "tooltip": {
@@ -144,6 +149,7 @@
       "dashes": false,
       "datasource": "InfluxDB",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
@@ -152,22 +158,25 @@
       },
       "id": 2,
       "legend": {
-        "alignAsTable": false,
-        "avg": false,
+        "alignAsTable": true,
+        "avg": true,
         "current": false,
         "hideEmpty": false,
         "hideZero": false,
-        "max": false,
-        "min": false,
+        "max": true,
+        "min": true,
         "rightSide": false,
         "show": true,
-        "total": false,
-        "values": false
+        "total": true,
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -178,11 +187,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "",
+          "alias": "Request Type: $tag_type",
           "groupBy": [
             {
               "params": [
-                "1s"
+                "$__interval"
               ],
               "type": "time"
             },
@@ -191,8 +200,15 @@
                 "type"
               ],
               "type": "tag"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
             }
           ],
+          "hide": false,
           "measurement": "performance_request_successful_count",
           "orderByTime": "ASC",
           "policy": "default",
@@ -209,24 +225,25 @@
               {
                 "params": [],
                 "type": "sum"
+              },
+              {
+                "params": [
+                  " / $__interval_ms*1000"
+                ],
+                "type": "math"
               }
             ]
           ],
           "tags": []
         },
         {
+          "alias": "All Types",
           "groupBy": [
             {
               "params": [
-                "1s"
+                "$__interval"
               ],
               "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
             }
           ],
           "hide": false,
@@ -246,80 +263,12 @@
               {
                 "params": [],
                 "type": "sum"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "groupBy": [
-            {
-              "params": [
-                "1s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "performance_request_failed_count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
               },
               {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "groupBy": [
-            {
-              "params": [
-                "1s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "performance_request_failed_count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
                 "params": [
-                  "value"
+                  " / $__interval_ms*1000"
                 ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
+                "type": "math"
               }
             ]
           ],
@@ -328,6 +277,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Requests per Second",
       "tooltip": {
@@ -335,7 +285,6 @@
         "sort": 0,
         "value_type": "individual"
       },
-      "transparent": false,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -346,7 +295,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "reqps",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -369,14 +318,14 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 16,
+  "schemaVersion": 19,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -407,5 +356,5 @@
   "timezone": "",
   "title": "Performance",
   "uid": "1Mar-DTiz",
-  "version": 2
+  "version": 1
 }
