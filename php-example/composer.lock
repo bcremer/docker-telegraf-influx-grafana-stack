@@ -4,31 +4,39 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9d49baaed54dc54af6583be843601f9",
+    "content-hash": "b8cf1a41d6b71fbdf6a198703ab61726",
     "packages": [
         {
             "name": "league/statsd",
-            "version": "1.4.3",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/statsd.git",
-                "reference": "bee97e7ab60f0342f1f7b71748c012a04fcdbbb2"
+                "reference": "c6290ef6c7528b7b739b26ce6aedf81ee6a4a2ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/statsd/zipball/bee97e7ab60f0342f1f7b71748c012a04fcdbbb2",
-                "reference": "bee97e7ab60f0342f1f7b71748c012a04fcdbbb2",
+                "url": "https://api.github.com/repos/thephpleague/statsd/zipball/c6290ef6c7528b7b739b26ce6aedf81ee6a4a2ac",
+                "reference": "c6290ef6c7528b7b739b26ce6aedf81ee6a4a2ac",
                 "shasum": ""
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "silex/silex": "~2.0"
+                "phpunit/phpunit": "^5.7 || ^6.5"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "League\\StatsD\\Laravel5\\Provider\\StatsdServiceProvider"
+                    ],
+                    "aliases": {
+                        "Statsd": "League\\StatsD\\Laravel5\\Facade\\StatsdFacade"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "League\\StatsD\\": "src",
-                    "League\\StatsD\\Test\\": "tests"
+                    "League\\StatsD\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -50,7 +58,7 @@
                 "library",
                 "statsd"
             ],
-            "time": "2017-07-17T17:01:13+00:00"
+            "time": "2018-10-09T16:02:46+00:00"
         }
     ],
     "packages-dev": [],
@@ -59,6 +67,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": []
+    "platform": {
+        "ext-pcntl": "*"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

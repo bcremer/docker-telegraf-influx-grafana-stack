@@ -2,6 +2,7 @@
   "annotations": {
     "list": [
       {
+        "$$hashKey": "object:7",
         "builtIn": 1,
         "datasource": "-- Grafana --",
         "enable": true,
@@ -27,19 +28,22 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 4,
+      "interval": "",
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -58,6 +62,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "alias": "$tag_type",
           "groupBy": [
             {
               "params": [
@@ -107,7 +112,7 @@
       "title": "Request Time",
       "tooltip": {
         "shared": true,
-        "sort": 0,
+        "sort": 1,
         "value_type": "individual"
       },
       "type": "graph",
@@ -120,21 +125,23 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:237",
           "decimals": null,
           "format": "ms",
-          "label": "ms",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
           "show": true
         },
         {
+          "$$hashKey": "object:238",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -151,11 +158,12 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 0
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 9
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "alignAsTable": true,
@@ -282,7 +290,7 @@
       "title": "Requests per Second",
       "tooltip": {
         "shared": true,
-        "sort": 0,
+        "sort": 2,
         "value_type": "individual"
       },
       "type": "graph",
@@ -295,6 +303,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:126",
           "format": "reqps",
           "label": null,
           "logBase": 1,
@@ -303,6 +312,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:127",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -318,7 +328,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 19,
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -356,5 +366,8 @@
   "timezone": "",
   "title": "Performance",
   "uid": "1Mar-DTiz",
+  "variables": {
+    "list": []
+  },
   "version": 1
 }
