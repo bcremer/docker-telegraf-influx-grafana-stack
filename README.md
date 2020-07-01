@@ -27,12 +27,24 @@ $ docker-compose up
 
 Run the influx client:
 
+```bash
+$ docker-compose exec influxdb influx -execute 'SHOW DATABASES'
 ```
+
+Run the influx interactive console:
+
+```bash
 $ docker-compose exec influxdb influx
 
 Connected to http://localhost:8086 version 1.8.0
 InfluxDB shell version: 1.8.0
 >
+```
+
+[Import data from a file with -import](https://docs.influxdata.com/influxdb/v1.8/tools/shell/#import-data-from-a-file-with-import)
+
+```bash
+$ docker-compose exec -w /imports influxdb influx -import -path=data.txt -precision=s
 ```
 
 ## Run the PHP Example

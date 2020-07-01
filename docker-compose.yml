@@ -17,6 +17,7 @@ services:
     ports:
       - '127.0.0.1:8086:8086'
     volumes:
+      - ./:/imports
       - influxdb_data:/var/lib/influxdb
 
   grafana:
