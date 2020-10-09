@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   telegraf:
-    image: library/telegraf:1.14-alpine
+    image: telegraf:1.15-alpine
     volumes:
     - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
@@ -21,7 +21,7 @@ services:
       - influxdb_data:/var/lib/influxdb
 
   grafana:
-    image: grafana/grafana:6.7.0
+    image: grafana/grafana:7.2.1
     depends_on:
       - influxdb
     env_file: configuration.env
