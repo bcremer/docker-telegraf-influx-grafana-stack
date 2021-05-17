@@ -2,6 +2,8 @@
 
 This an example project to show the TIG (Telegraf, InfluxDB and Grafana) stack.
 
+![Example Screenshot](./example.png?raw=true "Example Screenshot")
+
 ## Start the stack with docker compose
 
 ```bash
@@ -71,4 +73,3 @@ Killed by Ctrl+C
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
-![Example Screenshot](./example.png?raw=true "Example Screenshot")
