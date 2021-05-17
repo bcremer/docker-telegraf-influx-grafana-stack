@@ -67,5 +67,8 @@ Ops/s:		30.548965899738
 Killed by Ctrl+C
 ```
 
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 ![Example Screenshot](./example.png?raw=true "Example Screenshot")
