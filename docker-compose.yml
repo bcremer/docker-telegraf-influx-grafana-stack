@@ -1,9 +1,13 @@
 version: '3.6'
 services:
+
   telegraf:
     image: telegraf:1.18-alpine
+    container_name: telegraf
+    user: ${CURRENT_UID}
     volumes:
-    - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - influxdb
     links:
@@ -13,7 +17,8 @@ services:
 
   influxdb:
     image: influxdb:1.8-alpine
-    env_file: configuration.env
+    container_name: influx
+    env_file: .env
     ports:
       - '127.0.0.1:8086:8086'
     volumes:
@@ -22,9 +27,10 @@ services:
 
   grafana:
     image: grafana/grafana:8.0.2
+    container_name: grafana
     depends_on:
       - influxdb
-    env_file: configuration.env
+    env_file: .env
     links:
       - influxdb
     ports:
@@ -33,6 +39,55 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
       - ./grafana/dashboards/:/var/lib/grafana/dashboards/
+
+  php:
+    build: ./php
+    container_name: php-fpm
+    volumes:
+      - ./public:/var/www
+    depends_on:
+      - mongo
+      - elasticsearch
+      - telegraf
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/var/www
+      - ./server.conf:/etc/nginx/conf.d/server.conf
+    depends_on:
+      - telegraf
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    depends_on:
+      - telegraf
+
+  elasticsearch:
+    image: elasticsearch:8.1.3
+    container_name: elastic
+    volumes:
+      - ./elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - cluster.name=ESCluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms64m -Xmx512m"
+      - xpack.security.enabled=false
+      - node.name=es_node1
+    depends_on:
+      - telegraf
 
 volumes:
   grafana_data: {}

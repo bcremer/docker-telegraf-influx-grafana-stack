@@ -1,0 +1,3 @@
+/public/vendor
+/mongo_data/*
+/elasticsearch/*
