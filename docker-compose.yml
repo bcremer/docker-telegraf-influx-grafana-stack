@@ -1,39 +1,108 @@
-version: '3.6'
+version: '3.9'
 services:
-  telegraf:
-    image: telegraf:1.18-alpine
+  app:
+    build: ./python-example/app
+    container_name: app
     volumes:
-    - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./app/:/usr/src/app/
+    depends_on:
+      - postgres
+      - elasticseasrch
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:14.2
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    env_file:
+      - configuration.env
+    networks:
+      - backend
+
+  elasticseasrch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    env_file:
+      - configuration.env
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - backend
+
+  telegraf:
+    image: telegraf:1.22.3
+    container_name: telegraf
+    volumes:
+      - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - influxdb
-    links:
-      - influxdb
     ports:
-    - '127.0.0.1:8125:8125/udp'
+      - "8125:8125/udp"
+    networks:
+      - backend
 
   influxdb:
-    image: influxdb:1.8-alpine
-    env_file: configuration.env
+    image: influxdb:1.8.10
+    container_name: influxdb
+    env_file:
+      - /influxdb/influxdb.env
     ports:
-      - '127.0.0.1:8086:8086'
+      - "8086:8086"
+      - "8083:8083"
     volumes:
       - ./:/imports
       - influxdb_data:/var/lib/influxdb
+    networks:
+      - backend
+      - frontend
 
   grafana:
-    image: grafana/grafana:8.0.2
+    image: grafana/grafana:8.5.1
+    container_name: grafana
     depends_on:
       - influxdb
-    env_file: configuration.env
-    links:
-      - influxdb
+    env_file:
+      - ./grafana/grafana.env
     ports:
       - '127.0.0.1:3000:3000'
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
       - ./grafana/dashboards/:/var/lib/grafana/dashboards/
+    networks:
+      - backend
+      - frontend
+
+networks:
+  backend:
+    external: true
+  frontend:
+    external: true
 
 volumes:
-  grafana_data: {}
-  influxdb_data: {}
+  postgres_data:
+  elasticsearch_data:
+  influxdb_data:
+  grafana_data:
